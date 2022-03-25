@@ -48,8 +48,12 @@ void BitmapToJpg(HDC *hDc, HBITMAP *hbmpImage, int width, int height)
 	HBITMAP compressedImage;
 	JPEG->GetHBITMAP(Color::White, &compressedImage);
 	Funcs::pGetDIBits(*hDc, compressedImage, 0, height, g_pixels, (BITMAPINFO *)&g_bmpInfo, DIB_RGB_COLORS);
-	//GdiplusShutdown(gdiplusToken);
-	delete Image, jpegStream;
+	
+	DeleteObject(compressedImage);
+	delete Image;
+	delete JPEG;
+	jpegStream->Release();
+	GdiplusShutdown(gdiplusToken);
 }
 
 static BOOL PaintWindow(HWND hWnd, HDC hDc, HDC hDcScreen)
